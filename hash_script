@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Check if the script is called with an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <4-digit integer>"
+    exit 1
+fi
+
+# Get the 4-digit integer from the command line argument
+input=$1
+
+# Check if the input is a 4-digit integer
+if ! [[ $input =~ ^[0-9]{4}$ ]]; then
+    echo "Error: Please provide a valid 4-digit integer."
+    exit 1
+fi
+
+# Use sha256sum to hash the input
+hash_output=$(echo -n "$input" | sha256sum)
+
+# Extract the hash from the output
+hash_value=$(echo "$hash_output" | cut -d' ' -f1)
+
+# Save the hash to hash_output.txt
+echo "Input: $input" > hash_output.txt
+echo "Hash: $hash_value" >> hash_output.txt
+
+echo "Hash of $input saved to hash_output.txt"
